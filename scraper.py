@@ -1,16 +1,25 @@
+# A Python-craigslist wrapper from https://github.com/juliomalegria/python-craigslist
 from craigslist import CraigslistHousing
+# SQLAlchemy imports
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean
 from sqlalchemy.orm import sessionmaker
+# Util imports
 from dateutil.parser import parse
 from util import post_listing_to_slack, find_points_of_interest
+# Slack, not needed
 from slackclient import SlackClient
+# Other
 import time
 import settings
 
+# My CL site: https://sfbay.craigslist.org/search/pen/apa
+
+# https://docs.sqlalchemy.org/en/20/core/engines.html
 engine = create_engine('sqlite:///listings.db', echo=False)
 
+# https://docs.sqlalchemy.org/en/20/orm/extensions/declarative/api.html#module-sqlalchemy.ext.declarative
 Base = declarative_base()
 
 class Listing(Base):
@@ -35,6 +44,7 @@ class Listing(Base):
 
 Base.metadata.create_all(engine)
 
+# https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.sessionmaker
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -44,18 +54,36 @@ def scrape_area(area):
     :param area:
     :return: A list of results.
     """
-    cl_h = CraigslistHousing(site=settings.CRAIGSLIST_SITE, area=area, category=settings.CRAIGSLIST_HOUSING_SECTION,
-                             filters={'max_price': settings.MAX_PRICE, "min_price": settings.MIN_PRICE})
+    cl_h = CraigslistHousing(
+        site=settings.CRAIGSLIST_SITE, 
+        area=area, 
+        category=settings.CRAIGSLIST_HOUSING_SECTION,
+        filters={
+            'max_price': settings.MAX_PRICE, 
+            "min_price": settings.MIN_PRICE
+        }
+    )
 
     results = []
-    gen = cl_h.get_results(sort_by='newest', geotagged=True, limit=20)
+
+
+    gen = cl_h.get_results(
+        sort_by='newest', 
+        geotagged=True, 
+        limit=20
+    )
+
     while True:
+        # https://www.w3schools.com/python/python_try_except.asp
         try:
+            # https://www.w3schools.com/python/ref_func_next.asp
             result = next(gen)
+        # https://www.w3schools.com/python/gloss_python_iterator_stop.asp
         except StopIteration:
             break
         except Exception:
             continue
+        
         listing = session.query(Listing).filter_by(cl_id=result["id"]).first()
 
         # Don't store the listing if it already exists.

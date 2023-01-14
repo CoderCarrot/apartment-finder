@@ -45,7 +45,7 @@ def find_points_of_interest(geotag, location):
     """
     Find points of interest, like transit, near a result.
     :param geotag: The geotag field of a Craigslist result.
-    :param location: The where field of a Craigslist result.  Is a string containing a description of where
+    :param location: The where field of a Craigslist result. Is a string containing a description of where
     the listing was posted.
     :return: A dictionary containing annotations.
     """

@@ -6,7 +6,7 @@ import os
 MIN_PRICE = 1500
 
 # The maximum rent you want to pay per month.
-MAX_PRICE = 2000
+MAX_PRICE = 6000
 
 ## Location preferences
 
@@ -18,56 +18,32 @@ CRAIGSLIST_SITE = 'sfbay'
 # What Craigslist subdirectories to search on.
 # For instance, https://sfbay.craigslist.org/eby/ is the East Bay, and https://sfbay.craigslist.org/sfc/ is San Francisco.
 # You only need the last three letters of the URLs.
-AREAS = ["eby", "sfc", "sby", "nby"]
+AREAS = ["eby", "sfc", "sby", "nby", "pen"]
 
 # A list of neighborhoods and coordinates that you want to look for apartments in.  Any listing that has coordinates
-# attached will be checked to see which area it is in.  If there's a match, it will be annotated with the area
+# attached will be checked to see which area it is in. If there's a match, it will be annotated with the area
 # name.  If no match, the neighborhood field, which is a string, will be checked to see if it matches
 # anything in NEIGHBORHOODS.
 BOXES = {
-    "adams_point": [
-        [37.80789, -122.25000],
-        [37.81589,	-122.26081],
+    "main_box": [
+        [37.618375, -122.442140],
+        [37.5522986,-122.2844008],
     ],
-    "piedmont": [
-        [37.82240, -122.24768],
-        [37.83237, -122.25386],
+    "380_to_101": [
+        [37.625833, -122.402518],
+        [37.634023, -122.414479],
     ],
-    "rockridge": [
-        [37.83826, -122.24073],
-        [37.84680, -122.25944],
+    "380_mid": [
+        [37.634023, -122.414479],
+        [37.627723, -122.418260],
     ],
-    "berkeley": [
-        [37.86226, -122.25043],
-        [37.86781, -122.26502],
+    "92_mid": [
+        [37.5522986,-122.2844008],
+        [37.542560, -122.366658],
     ],
-    "north_berkeley": [
-        [37.86425, -122.26330],
-        [37.87655, -122.28974],
-    ],
-    "pac_heights": [
-        [37.79124, -122.42381],
-        [37.79850, -122.44784],
-    ],
-    "lower_pac_heights": [
-        [37.78554, -122.42878],
-        [37.78873, -122.44544],
-    ],
-    "haight": [
-        [37.77059, -122.42688],
-        [37.77086, -122.45401],
-    ],
-    "sunset": [
-        [37.75451, -122.46422],
-        [37.76258, -122.50825],
-    ],
-    "richmond": [
-        [37.77188, -122.47263],
-        [37.78029, -122.51005],
-    ],
-    "presidio": [
-        [37.77805, -122.43959],
-        [37.78829, -122.47151],
+    "92_dip": [
+        [37.542560, -122.366658],
+        [37.508660, -122.328043],
     ]
 }
 
@@ -85,11 +61,8 @@ MAX_TRANSIT_DIST = 2 # kilometers
 # Transit stations you want to check against.  Every coordinate here will be checked against each listing,
 # and the closest station name will be added to the result and posted into Slack.
 TRANSIT_STATIONS = {
-    "oakland_19th_bart": [37.8118051,-122.2720873],
-    "macarthur_bart": [37.8265657,-122.2686705],
-    "rockridge_bart": [37.841286,-122.2566329],
-    "downtown_berkeley_bart": [37.8629541,-122.276594],
-    "north_berkeley_bart": [37.8713411,-122.2849758]
+    "san_bruno_bart": [37.637873, -122.415947],
+    "millbrae_bart": [37.600244, -122.387435]
 }
 
 ## Search type preferences
